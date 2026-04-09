@@ -8,7 +8,7 @@ import './styles/global.css'
 import './styles/card-base.css'
 
 // 3. 卡片特有样式 — 每个卡片自己独立的样式
-import './styles/library-card.css'
+import './styles/card/library-card.css'
 // 未来新增卡片在这里继续加：
 // import './styles/vpn-card.css'
 // import './styles/canteen-card.css'
