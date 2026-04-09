@@ -1,0 +1,43 @@
+/* ===== LibraryCard 特有样式 ===== */
+.library-stats {
+  display: flex;
+  justify-content: space-around;
+  margin: 16px 0 24px;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-label {
+  display: block;
+  font-size: 14px;
+  color: #64748b;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.stat-number {
+  display: block;
+  font-size: 42px;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-bottom: 4px;
+}
+
+.stat-unit {
+  font-size: 13px;
+  color: #94a3b8;
+}
+
+.source-tag {
+  font-size: 13px;
+  color: #10b981;
+  background: #ecfdf5;
+  padding: 6px 14px;
+  border-radius: 40px;
+  font-weight: 500;
+}
