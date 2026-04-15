@@ -1,0 +1,131 @@
+/* ===== 侧边栏 ===== */
+.app-sidebar {
+  width: 260px;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-right: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  border-top-left-radius: 20px;
+  border-bottom-left-radius: 20px;
+  overflow: hidden;
+}
+
+/* ===== Logo 区域 ===== */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 28px 24px;
+  cursor: pointer;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+  flex-shrink: 0;
+}
+
+.logo-emoji {
+  font-size: 36px;
+  filter: drop-shadow(0 4px 8px rgba(100, 100, 255, 0.15));
+}
+
+.logo-text {
+  font-size: 26px;
+  font-weight: 800;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  letter-spacing: -0.02em;
+}
+
+/* ===== 导航区域 ===== */
+.sidebar-nav {
+  flex: 1;
+  padding: 20px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  position: relative;
+  overflow-y: auto;
+}
+
+/* ===== 动态滑块 ===== */
+.nav-slider {
+  position: absolute;
+  top: 0;
+  left: 12px;
+  right: 12px;
+  height: 52px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(79, 70, 229, 0.25);
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 0;
+  pointer-events: none;
+  /* 关键：让滑块也考虑 gap */
+  margin: 0;
+}
+
+/* ===== 导航项 ===== */
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 0 18px;
+  border-radius: 14px;
+  cursor: pointer;
+  color: #5b5b8a;
+  font-weight: 500;
+  position: relative;
+  z-index: 1;
+  background: transparent;
+  transition: color 0.25s ease;
+  flex-shrink: 0;
+  height: 52px;
+  box-sizing: border-box;
+}
+
+
+.nav-item:hover {
+  color: #4f46e5;
+  background: transparent;
+}
+
+.nav-item.active {
+  color: white;
+  background: transparent;
+}
+
+.nav-icon {
+  font-size: 22px;
+  width: 30px;
+  text-align: center;
+}
+
+.nav-label {
+  font-size: 15px;
+}
+
+/* ===== 滚动条美化 ===== */
+.sidebar-nav::-webkit-scrollbar {
+  width: 4px;
+}
+
+.sidebar-nav::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.sidebar-nav::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+}
+
+/* ===== 移动端：隐藏侧边栏 ===== */
+@media (max-width: 768px) {
+  .app-sidebar {
+    display: none;
+  }
+}

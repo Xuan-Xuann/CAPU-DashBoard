@@ -1,0 +1,99 @@
+/* ===== App.vue 布局样式 ===== */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+  min-height: 100vh;
+}
+
+.page-container {
+  flex: 1;
+  padding: 24px 32px;
+}
+
+/* ===== 移动端 ===== */
+@media (max-width: 768px) {
+  .app-layout.is-mobile {
+    display: block;
+  }
+  
+  .page-container {
+    padding: 16px 12px;
+    /* 只给内容区留底部导航的空间，Footer 在外部不受影响 */
+    padding-bottom: 80px;
+  }
+  
+  /* 移动端 Footer 需要额外的底部留白，避免被导航栏遮挡 */
+  .app-footer.is-mobile {
+    padding-bottom: 80px;
+    padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+  }
+  
+  /* 底部导航栏 */
+  .mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 72px;
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+    
+    /* 毛玻璃效果 */
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    
+    /* 顶部细边框 */
+    border-top: 0.5px solid rgba(255, 255, 255, 0.6);
+    
+    /* 阴影 */
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.04);
+    
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+    padding-top: 8px;
+    box-sizing: border-box;
+    z-index: 100;
+  }
+  
+  .mobile-nav-item {
+    flex: 1;
+    max-width: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 0;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: #8a8aa0;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  .mobile-nav-item:active {
+    transform: scale(0.94);
+    background: rgba(79, 70, 229, 0.06);
+  }
+  
+  .mobile-nav-item.active {
+    color: #4f46e5;
+  }
+  
+  .mobile-nav-icon {
+    font-size: 24px;
+    line-height: 1;
+  }
+  
+  .mobile-nav-label {
+    font-size: 11px;
+    font-weight: 500;
+  }
+}

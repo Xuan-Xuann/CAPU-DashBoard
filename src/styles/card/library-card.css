@@ -14,23 +14,29 @@
   display: block;
   font-size: 14px;
   color: #64748b;
-  margin-bottom: 12px;
+  margin-bottom: 8px;
   font-weight: 500;
 }
 
+.stat-value {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+}
+
 .stat-number {
-  display: block;
-  font-size: 42px;
+  font-size: 36px;
   font-weight: 700;
   color: #0f172a;
   line-height: 1.2;
   letter-spacing: -0.02em;
-  margin-bottom: 4px;
 }
 
 .stat-unit {
-  font-size: 13px;
+  font-size: 14px;
   color: #94a3b8;
+  font-weight: 400;
 }
 
 .source-tag {
@@ -40,4 +46,25 @@
   padding: 6px 14px;
   border-radius: 40px;
   font-weight: 500;
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .stat-number {
+    font-size: 28px;
+  }
+  
+  .stat-label {
+    font-size: 12px;
+    margin-bottom: 4px;
+  }
+  
+  .stat-unit {
+    font-size: 12px;
+  }
+  
+  .source-tag {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
 }

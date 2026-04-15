@@ -1,4 +1,4 @@
-/* ===== 卡片基础样式 ===== */
+/* ===== 卡片基础样式（内联） ===== */
 .card {
   background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(255,255,255,0.85) 100%);
   backdrop-filter: blur(12px);
@@ -36,9 +36,6 @@
   background-clip: text;
   color: transparent;
   letter-spacing: -0.01em;
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .card-badge {
@@ -58,6 +55,12 @@
 }
 
 /* ===== WeatherCard 特有样式 ===== */
+.weather-card .card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
 .weather-icon {
   font-size: 22px;
 }
@@ -75,14 +78,14 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  gap: 16px;
 }
 
 .weather-main {
   display: flex;
   align-items: baseline;
-  justify-content: center;
-  padding: 16px 0;
+  justify-content: space-around;
+  padding: 8px 0;
 }
 
 .temp-block {
@@ -92,7 +95,7 @@
 }
 
 .temp-value {
-  font-size: 64px;
+  font-size: 48px;
   font-weight: 700;
   background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
   -webkit-background-clip: text;
@@ -102,9 +105,71 @@
 }
 
 .temp-unit {
-  font-size: 22px;
+  font-size: 18px;
   color: #ef4444;
   font-weight: 500;
+}
+
+.humidity-block {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.humidity-icon {
+  font-size: 20px;
+  margin-right: 4px;
+}
+
+.humidity-value {
+  font-size: 32px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #0ea5e9 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  line-height: 1;
+}
+
+.humidity-unit {
+  font-size: 14px;
+  color: #3b82f6;
+  font-weight: 500;
+}
+
+.weather-details {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px 0;
+  background: rgba(255, 255, 255, 0.4);
+  border-radius: 16px;
+  border: 0.5px solid rgba(255, 255, 255, 0.5);
+}
+
+.detail-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.detail-icon {
+  font-size: 20px;
+  margin-bottom: 2px;
+}
+
+.detail-label {
+  font-size: 11px;
+  color: #64748b;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.detail-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1e293b;
 }
 
 .weather-time {
@@ -112,7 +177,7 @@
   align-items: center;
   justify-content: center;
   gap: 6px;
-  font-size: 13px;
+  font-size: 12px;
   color: #64748b;
   padding: 8px 0;
 }
@@ -148,10 +213,14 @@
   }
   
   .temp-value {
-    font-size: 52px;
+    font-size: 40px;
   }
   
-  .temp-unit {
-    font-size: 18px;
+  .humidity-value {
+    font-size: 28px;
+  }
+  
+  .detail-value {
+    font-size: 13px;
   }
 }

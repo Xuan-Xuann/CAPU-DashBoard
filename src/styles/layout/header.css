@@ -1,0 +1,57 @@
+/* ===== 头部 ===== */
+.app-header {
+  height: 64px;
+  padding: 0 32px;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* 移动端 Header */
+.app-header.is-mobile {
+  height: 56px;
+  padding: 0 16px;
+}
+
+.header-left h2 {
+  font-size: 18px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #4f46e5 0%, #ec4899 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app-header.is-mobile .header-left h2 {
+  font-size: 16px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+}
+
+.header-right .time {
+  color: #4a4a6a;
+  font-size: 14px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 8px 18px;
+  border-radius: 30px;
+  border: 0.5px solid rgba(255, 255, 255, 0.8);
+  font-family: 'SF Mono', 'Monaco', 'Menlo', monospace;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.app-header.is-mobile .header-right .time {
+  font-size: 12px;
+  padding: 6px 12px;
+}

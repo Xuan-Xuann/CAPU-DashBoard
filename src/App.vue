@@ -1,69 +1,77 @@
-<!-- 
-  App.vue — 数据看板外壳
-  职责：提供页面框架，组合卡片组件
--->
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
-import LibraryCard from './components/LibraryCard.vue'
-import PlaceholderCard from './components/PlaceholderCard.vue'
+import { ref, onMounted, onUnmounted} from 'vue'
+import { RouterView, useRouter, useRoute } from 'vue-router'
+import AppSidebar from './components/layout/AppSidebar.vue'
+import AppHeader from './components/layout/AppHeader.vue'
+import AppFooter from './components/layout/AppFooter.vue'
 
-const currentTime = ref(new Date().toLocaleString('zh-CN'))
-let timer: number
+const router = useRouter()
+const route = useRoute()
+const isMobile = ref(false)
+
+function checkMobile() {
+  isMobile.value = window.innerWidth <= 768
+}
+
+function navigateTo(path: string) {
+  router.push(path)
+}
+
+function isActive(path: string): boolean {
+  if (path === '/') return route.path === '/'
+  return route.path.startsWith(path)
+}
 
 onMounted(() => {
-  timer = setInterval(() => {
-    currentTime.value = new Date().toLocaleString('zh-CN')
-  }, 1000)
+  checkMobile()
+  window.addEventListener('resize', checkMobile)
 })
 
 onUnmounted(() => {
-  clearInterval(timer)
+  window.removeEventListener('resize', checkMobile)
 })
+
+const mobileMenuItems = [
+  { path: '/', label: '看板', icon: '📊' },
+  { path: '/announcements', label: '公告', icon: '📢' },
+  { path: '/guide', label: '引导', icon: '🎓' },
+  { path: '/community', label: '交流', icon: '💬' },
+]
 </script>
 
 <template>
-  <div class="dashboard">
-    <!-- 头部 -->
-    <header class="dashboard-header">
-      <div>
-        <h1>📡 CAPU 校园数据看板</h1>
-        <div class="header-subtitle">校园数据聚合服务 · 实时监控</div>
-      </div>
-      <div class="header-right">
-        <div class="status-badge">
-          <span class="status-dot"></span>
-          <span>API 在线</span>
-        </div>
-        <div class="stats-summary">
-          <span>📊 数据源: 1/1</span>
-          <span>⏱️ 运行: 0.1h</span>
-        </div>
-      </div>
-    </header>
-
-    <!-- 卡片网格 -->
-    <main class="card-grid">
-      <LibraryCard />
+  <div class="app-layout" :class="{ 'is-mobile': isMobile }">
+    <!-- 桌面端侧边栏 -->
+    <AppSidebar v-if="!isMobile" />
+    
+    <div class="main-content">
+      <!-- 全局 Header：桌面端和移动端都显示 -->
+      <AppHeader :is-mobile="isMobile" />
       
-      <PlaceholderCard 
-        emoji="🍜"
-        title="食堂拥挤度"
-        description="即将接入实时数据"
-        badge="建设中"
-      />
+      <div class="page-container">
+        <RouterView />
+      </div>
       
-      <PlaceholderCard 
-        emoji="📶"
-        title="WebVPN 状态"
-        description="延迟监测准备中"
-        badge="规划中"
-      />
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="dashboard-footer">
-      <span>CAPU API Service · 数据实时同步</span>
-      <span>最后更新: {{ currentTime }}</span>
-    </footer>
+      <!-- Footer：始终显示 -->
+      <AppFooter :is-mobile="isMobile" />
+      
+      <!-- 移动端底部导航栏 -->
+      <nav v-if="isMobile" class="mobile-nav">
+        <div 
+          v-for="item in mobileMenuItems" 
+          :key="item.path"
+          class="mobile-nav-item"
+          :class="{ active: isActive(item.path) }"
+          @click="navigateTo(item.path)"
+        >
+          <span class="mobile-nav-icon">{{ item.icon }}</span>
+          <span class="mobile-nav-label">{{ item.label }}</span>
+        </div>
+      </nav>
+    </div>
   </div>
 </template>
+
+<style scoped>
+@import './styles/app.css';
+</style>
