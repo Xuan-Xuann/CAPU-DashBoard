@@ -49,7 +49,7 @@ onUnmounted(() => {
       
       <!-- 第一行：版权 + 品牌 -->
       <div class="footer-row">
-        <span class="copyright">© {{ currentYear }}</span>
+        <span class="copyright">©Rinty Developer {{ currentYear }}</span>
         <span class="separator">/</span>
         <span class="brand">
           <span class="brand-letter">C</span>
@@ -58,7 +58,7 @@ onUnmounted(() => {
           <span class="brand-letter">U</span>
         </span>
         <span class="separator">/</span>
-        <span class="school">成都航院</span>
+        <span class="school">成都航空职业技术大学</span>
       </div>
       
       <!-- 第二行：时间（移动端只显示文字，桌面端显示时钟+文字） -->

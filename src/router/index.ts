@@ -32,6 +32,13 @@ const router = createRouter({
       name: 'community',
       component: () => import('../views/Community.vue'),
       meta: { title: '用户交流' }
+    },
+
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('../views/NotFound.vue'),
+      meta: { title: '页面未找到' }
     }
   ]
 })

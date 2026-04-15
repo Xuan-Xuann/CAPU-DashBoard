@@ -49,7 +49,7 @@ onMounted(async () => {
   <div class="guide-page">
     <div class="page-header">
       <h1>🎓 新生引导</h1>
-      <p class="subtitle">快速了解校园生活，一站式完成入学准备</p>
+      <p class="subtitle">快速了解校园生活，提前了解入学</p>
     </div>
 
     <GuideCategory

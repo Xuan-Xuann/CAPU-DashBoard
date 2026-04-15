@@ -7,6 +7,37 @@
   padding: 0;
 }
 
+/* 移除所有元素的点击高亮 */
+* {
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* 对于需要保留交互反馈的元素，用透明度代替 */
+button,
+a,
+[role="button"],
+.nav-item,
+.mobile-nav-item,
+.category-btn,
+.guide-card,
+.announcement-item,
+.back-btn {
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s ease, transform 0.2s ease, background 0.2s ease;
+}
+
+/* 点击时的反馈效果 */
+button:active,
+a:active,
+.nav-item:active,
+.mobile-nav-item:active,
+.category-btn:active,
+.guide-card:active,
+.announcement-item:active {
+  opacity: 0.7;
+}
+
 html {
   font-size: 16px;
   -webkit-font-smoothing: antialiased;
@@ -33,49 +64,6 @@ body {
   color: transparent;
 }
 
-/* ===== 微妙悬浮效果 ===== */
-.hover-lift {
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.hover-lift:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.04);
-}
-
-/* ===== 卡片渐变边框 ===== */
-.card-gradient-border {
-  position: relative;
-  background: white;
-  border-radius: 20px;
-}
-
-.card-gradient-border::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 20px;
-  padding: 1px;
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.15), rgba(139, 92, 246, 0.1));
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  pointer-events: none;
-}
-
-/* ===== 状态指示器动画 ===== */
-@keyframes pulse {
-  0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.3); }
-  70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
-}
-
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
-}
-
 /* ===== 骨架屏渐变动画 ===== */
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -83,14 +71,7 @@ body {
   animation: shimmer 1.5s infinite;
 }
 
-/* ===== 移动端适配 ===== */
-@media (max-width: 768px) {
-  html {
-    font-size: 14px;
-  }
-  
-  body {
-    background: linear-gradient(145deg, #f0f4ff 0%, #f8f0ff 50%, #fff0f5 100%);
-  }
-  
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
