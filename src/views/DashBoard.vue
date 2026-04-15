@@ -90,9 +90,9 @@ onUnmounted(() => {
       
       <!-- WebVPN 占位 -->
       <PlaceholderCard 
-        emoji="📶"
-        title="WebVPN 状态"
-        description="延迟监测准备中"
+        emoji="🔧"
+        title="更多信息卡片敬请期待"
+        description="😉正在开发哦，敬请期待"
         badge="规划中"
       />
     </main>

@@ -1,0 +1,169 @@
+# 校园引导数据
+# 编辑指南：
+#   - id: 使用英文短横线命名
+#   - category: library | canteen | dorm | transport | map | process
+#   - status: published | draft | review
+
+- id: library-borrow
+  icon: 📖
+  title: 如何借书
+  description: 图书馆借书全流程指南
+  category: library
+  tags:
+    - 借书
+    - 新生必看
+  steps:
+    - step: 1
+      title: 查找图书
+      description: 在检索机或图书馆官网搜索想要的图书
+    - step: 2
+      title: 记录索书号
+      description: 记下图书的索书号和馆藏地位置
+    - step: 3
+      title: 找书
+      description: 根据索书号到对应书架找到图书
+  content:
+    - type: paragraph
+      content: 本文介绍如何在成航图书馆借阅图书。
+    - type: tip
+      content: 借书前请确认校园卡余额充足，超期会产生罚款。
+  contributor: 图书馆志愿者协会
+  updatedAt: 2026-04-01
+  status: published
+  viewCount: 1256
+  helpfulCount: 90
+
+- id: library-seat
+  icon: 💺
+  title: 座位预约
+  description: 图书馆座位预约系统使用指南
+  category: library
+  tags:
+    - 座位
+    - 预约
+  steps:
+    - step: 1
+      title: 进入系统
+      description: 微信搜索"成航图书馆"小程序
+    - step: 2
+      title: 选择时间
+      description: 选择想要预约的日期和时段
+    - step: 3
+      title: 选择座位
+      description: 在平面图上选择空闲座位
+  content:
+    - type: paragraph
+      content: 图书馆座位预约系统可以有效避免占座现象。
+  contributor: 图书馆技术部
+  updatedAt: 2026-03-28
+  status: published
+  viewCount: 892
+  helpfulCount: 56
+
+- id: canteen-payment
+  icon: 💳
+  title: 食堂支付方式
+  description: 校园卡、微信、支付宝支付指南
+  category: canteen
+  tags:
+    - 支付
+    - 充值
+  steps:
+    - step: 1
+      title: 校园卡支付
+      description: 直接在刷卡机上刷校园卡
+    - step: 2
+      title: 校园卡充值
+      description: 在完美校园APP或食堂圈存机充值
+    - step: 3
+      title: 微信/支付宝
+      description: 扫描窗口二维码支付
+  content:
+    - type: tip
+      content: 新生入学时校园卡内已预存100元。
+  contributor: 后勤服务中心
+  updatedAt: 2026-04-10
+  status: published
+  viewCount: 2341
+  helpfulCount: 178
+
+- id: canteen-location
+  icon: 🍽️
+  title: 食堂位置与特色
+  description: 各食堂分布及推荐菜品
+  category: canteen
+  tags:
+    - 位置
+    - 推荐
+  steps:
+    - step: 1
+      title: 第一食堂
+      description: 位于教学区南侧，推荐麻辣香锅
+    - step: 2
+      title: 第二食堂
+      description: 位于宿舍区，推荐自选快餐
+    - step: 3
+      title: 清真食堂
+      description: 位于图书馆东侧，提供清真餐食
+  content:
+    - type: paragraph
+      content: 学校共有三个食堂，提供多样化餐饮选择。
+  contributor: 学生会生活部
+  updatedAt: 2026-04-05
+  status: published
+  viewCount: 1567
+  helpfulCount: 102
+
+- id: dorm-repair
+  icon: 🔧
+  title: 宿舍报修流程
+  description: 如何快速报修宿舍设施
+  category: dorm
+  tags:
+    - 报修
+    - 设施
+  steps:
+    - step: 1
+      title: 进入报修系统
+      description: 打开"成航后勤"微信公众号
+    - step: 2
+      title: 填写报修单
+      description: 选择宿舍楼、房间号、故障类型
+    - step: 3
+      title: 提交等待
+      description: 维修师傅会在24小时内联系
+  content:
+    - type: tip
+      content: 紧急情况可直接拨打后勤热线 028-8845xxxx。
+  contributor: 后勤维修部
+  updatedAt: 2026-03-15
+  status: published
+  viewCount: 892
+  helpfulCount: 67
+
+- id: transport-bus
+  icon: 🚌
+  title: 校车时刻表
+  description: 往返各校区的校车时间
+  category: transport
+  tags:
+    - 校车
+    - 时刻表
+  steps:
+    - step: 1
+      title: 工作日班次
+      description: 7:30-21:30，每30分钟一班
+    - step: 2
+      title: 周末班次
+      description: 8:00-20:00，每60分钟一班
+    - step: 3
+      title: 乘车地点
+      description: 教学区南门、宿舍区北门
+  content:
+    - type: paragraph
+      content: 刷校园卡乘车，单程2元。
+  contributor: 后勤运输中心
+  updatedAt: 2026-04-01
+  status: published
+  viewCount: 3456
+  helpfulCount: 234

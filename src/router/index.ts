@@ -22,6 +22,12 @@ const router = createRouter({
       meta: { title: '新生引导' }
     },
     {
+      path: '/guide/:id',
+      name: 'guide-detail',
+      component: () => import('../views/GuideDetail.vue'),
+      meta: { title: '引导详情' }
+    },
+    {
       path: '/community',
       name: 'community',
       component: () => import('../views/Community.vue'),
@@ -32,7 +38,9 @@ const router = createRouter({
 
 // 设置页面标题
 router.beforeEach((to) => {
-  document.title = `${to.meta.title} · CAPU`
+  if (to.meta.title) {
+    document.title = `${to.meta.title} · CAPU`
+  }
 })
 
 export default router

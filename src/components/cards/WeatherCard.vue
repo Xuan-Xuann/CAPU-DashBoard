@@ -65,6 +65,7 @@ function getWeatherIcon(temp: string): string {
       <div class="weather-time">
         <span class="time-icon">🕐</span>
         <span>数据时间: {{ tempData.update_time }}</span>
+        <span> 龙泉驿中学就在附近</span>
       </div>
     </div>
     
@@ -73,8 +74,12 @@ function getWeatherIcon(temp: string): string {
     </div>
 
     <div class="card-footer">
-      <span class="source-tag">数据源: 国家气象站</span>
+      <span class="source-tag">数据源: 国家气象站(Fan API)</span>
+
     </div>
+    
+    
+    
   </div>
 </template>
 
