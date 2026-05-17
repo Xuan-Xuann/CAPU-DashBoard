@@ -1,19 +1,51 @@
 name: Build and Release
 
 on:
-  workflow_dispatch:  # 允许手动触发
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: '版本更新类型'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      custom_version:
+        description: '自定义版本号 (留空则自动计算)'
+        required: false
+        default: ''
+        type: string
+  
   push:
     branches: [ "master" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/**'
+      - '.gitignore'
+  
   pull_request:
     branches: [ "master" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/**'
 
 jobs:
+  # 构建和测试
   build:
     runs-on: ubuntu-latest
-
+    
+    outputs:
+      build_status: ${{ job.status }}
+    
     steps:
       - name: 检出代码
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # 获取完整历史，用于版本计算
 
       - name: 设置 Node.js
         uses: actions/setup-node@v4
@@ -22,7 +54,11 @@ jobs:
           cache: 'npm'
 
       - name: 安装依赖
-        run: npm install
+        run: npm ci  # 使用 ci 命令更严格
+
+      - name: 运行测试 (如果有)
+        run: npm test || echo "No tests configured"
+        continue-on-error: true
 
       - name: 构建项目
         run: npm run build
@@ -32,33 +68,154 @@ jobs:
         with:
           name: dist
           path: dist/
+          retention-days: 7  # 设置保留天数
 
+  # 版本管理和发布
   release:
     needs: build
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
-
+    if: |
+      (github.event_name == 'push' && github.ref == 'refs/heads/master') ||
+      github.event_name == 'workflow_dispatch'
+    
     steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: 下载构建产物
         uses: actions/download-artifact@v4
         with:
           name: dist
           path: dist/
 
+      - name: 计算版本号
+        id: version
+        run: |
+          # 获取最新 tag
+          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
+          echo "Latest tag: $LATEST_TAG"
+          
+          # 解析版本号
+          VERSION=${LATEST_TAG#v}
+          MAJOR=$(echo $VERSION | cut -d. -f1)
+          MINOR=$(echo $VERSION | cut -d. -f2)
+          PATCH=$(echo $VERSION | cut -d. -f3)
+          
+          # 根据触发方式决定版本更新策略
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            # 手动触发时使用指定策略
+            VERSION_TYPE="${{ github.event.inputs.version_type }}"
+            CUSTOM_VERSION="${{ github.event.inputs.custom_version }}"
+            
+            if [ -n "$CUSTOM_VERSION" ]; then
+              NEW_VERSION="$CUSTOM_VERSION"
+            else
+              case $VERSION_TYPE in
+                major)
+                  MAJOR=$((MAJOR + 1))
+                  MINOR=0
+                  PATCH=0
+                  ;;
+                minor)
+                  MINOR=$((MINOR + 1))
+                  PATCH=0
+                  ;;
+                patch)
+                  PATCH=$((PATCH + 1))
+                  ;;
+              esac
+              NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+            fi
+          else
+            # 自动触发时根据提交信息决定
+            COMMIT_MSG=$(git log -1 --pretty=%B)
+            
+            if echo "$COMMIT_MSG" | grep -qiE 'breaking change|major:'; then
+              MAJOR=$((MAJOR + 1))
+              MINOR=0
+              PATCH=0
+            elif echo "$COMMIT_MSG" | grep -qiE 'feat|feature|minor:'; then
+              MINOR=$((MINOR + 1))
+              PATCH=0
+            else
+              PATCH=$((PATCH + 1))
+            fi
+            NEW_VERSION="$MAJOR.$MINOR.$PATCH"
+          fi
+          
+          echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "tag_name=v$NEW_VERSION" >> $GITHUB_OUTPUT
+          echo "New version: $NEW_VERSION"
+
+      - name: 更新 package.json 版本
+        if: github.event_name == 'push'
+        run: |
+          # 更新 package.json 中的版本号
+          npm version ${{ steps.version.outputs.new_version }} --no-git-tag-version
+          
+          # 提交版本更新
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
+          git push
+
+      - name: 生成更新日志
+        id: changelog
+        run: |
+          PREVIOUS_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "")
+          
+          if [ -n "$PREVIOUS_TAG" ]; then
+            echo "## 🚀 更新内容" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "**版本:** ${{ steps.version.outputs.tag_name }}" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "### 📝 提交记录" >> CHANGELOG.md
+            echo '```' >> CHANGELOG.md
+            git log $PREVIOUS_TAG..HEAD --oneline --no-merges >> CHANGELOG.md
+            echo '```' >> CHANGELOG.md
+          else
+            echo "## 🚀 首次发布" > CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "**版本:** ${{ steps.version.outputs.tag_name }}" >> CHANGELOG.md
+            echo "" >> CHANGELOG.md
+            echo "### 📝 提交记录" >> CHANGELOG.md
+            echo '```' >> CHANGELOG.md
+            git log --oneline --no-merges >> CHANGELOG.md
+            echo '```' >> CHANGELOG.md
+          fi
+          
+          # 读取更新日志内容到环境变量
+          CHANGELOG_CONTENT=$(cat CHANGELOG.md)
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$CHANGELOG_CONTENT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
       - name: 打包为 ZIP
         run: |
           cd dist
-          zip -r ../capu-dashboard.zip .
+          zip -r ../release-${{ steps.version.outputs.new_version }}.zip .
+          cd ..
+          echo "Release package: release-${{ steps.version.outputs.new_version }}.zip"
+
+      - name: 创建 Git Tag
+        run: |
+          git tag ${{ steps.version.outputs.tag_name }}
+          git push origin ${{ steps.version.outputs.tag_name }}
 
       - name: 创建 Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: v${{ github.run_number }}
-          name: Release v${{ github.run_number }}
-          body: |
-            ## 更新内容
-            - 自动构建于 ${{ github.sha }}
-            - 触发者：${{ github.actor }}
-          files: capu-dashboard.zip
+          tag_name: ${{ steps.version.outputs.tag_name }}
+          name: Release ${{ steps.version.outputs.tag_name }}
+          body: ${{ steps.changelog.outputs.changelog }}
+          files: |
+            release-${{ steps.version.outputs.new_version }}.zip
+          draft: false
+          prerelease: false
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
