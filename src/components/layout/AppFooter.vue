@@ -79,18 +79,18 @@ onUnmounted(() => {
       
       <!-- 第三行：链接 + 状态 -->
       <div class="footer-row footer-links-row">
-        <a href="#" class="footer-link">
+        <a href="https://github.com/Xuan-Xuann/CAPU-DashBoard" target="_blank" rel="noopener" class="footer-link">
+          <span class="link-text">GitHub</span>
+          <span v-if="!isMobile" class="link-underline"></span>
+        </a>
+        <span class="link-separator">·</span>
+        <a href="https://github.com/Xuan-Xuann/CAPU-API" target="_blank" rel="noopener" class="footer-link">
+          <span class="link-text">API</span>
+          <span v-if="!isMobile" class="link-underline"></span>
+        </a>
+        <span class="link-separator">·</span>
+        <a href="https://github.com/Xuan-Xuann" target="_blank" rel="noopener" class="footer-link">
           <span class="link-text">关于</span>
-          <span v-if="!isMobile" class="link-underline"></span>
-        </a>
-        <span class="link-separator">·</span>
-        <a href="#" class="footer-link">
-          <span class="link-text">隐私</span>
-          <span v-if="!isMobile" class="link-underline"></span>
-        </a>
-        <span class="link-separator">·</span>
-        <a href="#" class="footer-link">
-          <span class="link-text">条款</span>
           <span v-if="!isMobile" class="link-underline"></span>
         </a>
         <div v-if="!isMobile" class="status-indicator" title="系统运行中">

@@ -11,7 +11,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  min-height: 260px;
+  min-height: 280px;
 }
 
 .card:hover {
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .card-title {
@@ -49,87 +49,16 @@
   border-radius: 30px;
   border: 1px solid rgba(255, 255, 255, 0.8);
   font-weight: 500;
+  white-space: nowrap;
 }
 
 .card-footer {
   margin-top: auto;
   border-top: 1px solid rgba(124, 58, 237, 0.1);
-  padding-top: 20px;
+  padding-top: 18px;
 }
 
-/* ===== WeatherCard 特有样式 ===== */
-.weather-icon {
-  font-size: 22px;
-}
-
-.weather-loading {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #64748b;
-  font-size: 14px;
-}
-
-.weather-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.weather-main {
-  display: flex;
-  align-items: baseline;
-  justify-content: center;
-  padding: 16px 0;
-}
-
-.temp-block {
-  display: flex;
-  align-items: baseline;
-  gap: 4px;
-}
-
-.temp-value {
-  font-size: 64px;
-  font-weight: 700;
-  background: linear-gradient(135deg, #f97316 0%, #ef4444 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  line-height: 1;
-}
-
-.temp-unit {
-  font-size: 22px;
-  color: #ef4444;
-  font-weight: 500;
-}
-
-.weather-time {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  font-size: 13px;
-  color: #64748b;
-  padding: 8px 0;
-}
-
-.time-icon {
-  font-size: 14px;
-}
-
-.weather-error {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ef4444;
-  font-size: 14px;
-}
-
+/* 数据源标签（统一样式，更突出） */
 .source-tag {
   font-size: 12px;
   color: #0ea5e9;
@@ -138,6 +67,10 @@
   border-radius: 40px;
   font-weight: 500;
   border: 0.5px solid rgba(14, 165, 233, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  letter-spacing: 0.2px;
 }
 
 /* 移动端适配 */
@@ -145,13 +78,5 @@
   .card {
     padding: 20px;
     min-height: auto;
-  }
-  
-  .temp-value {
-    font-size: 52px;
-  }
-  
-  .temp-unit {
-    font-size: 18px;
   }
 }

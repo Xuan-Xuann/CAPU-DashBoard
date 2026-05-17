@@ -43,10 +43,18 @@ const router = createRouter({
   ]
 })
 
-// 设置页面标题
-router.beforeEach((to) => {
+// 设置页面标题 + SPA 404 回退
+router.beforeEach((to, from) => {
   if (to.meta.title) {
     document.title = `${to.meta.title} · CAPU`
+  }
+  // SPA fallback: 从 404.html 恢复原始路径
+  if (to.path === '/' && !from.name) {
+    const redirect = sessionStorage.getItem('__redirect')
+    if (redirect && redirect !== '/') {
+      sessionStorage.removeItem('__redirect')
+      return redirect
+    }
   }
 })
 

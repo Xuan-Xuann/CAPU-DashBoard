@@ -22,7 +22,7 @@ onUnmounted(() => {
 <template>
   <header class="app-header" :class="{ 'is-mobile': isMobile }">
     <div class="header-left">
-      <h2>校园服务平台</h2>
+      <h2>CAPU · 数据看板</h2>
     </div>
     <div class="header-right">
       <span class="time">{{ currentTime }}</span>

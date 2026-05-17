@@ -15,6 +15,9 @@
 .page-container {
   flex: 1;
   padding: 24px 32px;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
 }
 
 /* ===== 移动端 ===== */
@@ -25,6 +28,7 @@
   
   .page-container {
     padding: 16px 12px;
+    max-width: 100%;
     /* 只给内容区留底部导航的空间，Footer 在外部不受影响 */
     padding-bottom: 80px;
   }

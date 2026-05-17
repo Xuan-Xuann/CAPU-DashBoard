@@ -1,6 +1,6 @@
 /* ===== 看板容器 ===== */
 .dashboard {
-  max-width: 1600px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
@@ -93,15 +93,55 @@
   white-space: nowrap;
 }
 
-/* ===== 卡片网格 ===== */
+/* ===== 卡片网格（自适应列数） ===== */
 .card-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 24px;
+}
+
+/* 宽屏下更多列 */
+@media (min-width: 1400px) {
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1800px) {
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* ===== 占位卡片区域（移到底部） ===== */
+.placeholder-section {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(79, 70, 229, 0.1);
+}
+
+.placeholder-section-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  text-align: center;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.placeholder-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
 }
 
 /* ===== 移动端 ===== */
 @media (max-width: 768px) {
+  .dashboard {
+    max-width: 100%;
+  }
+
   .dashboard-header {
     flex-direction: column;
     align-items: flex-start;
@@ -133,6 +173,16 @@
   }
   
   .card-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .placeholder-section {
+    margin-top: 32px;
+    padding-top: 24px;
+  }
+
+  .placeholder-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }

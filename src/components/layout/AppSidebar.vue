@@ -68,6 +68,19 @@ nextTick(updateSliderPosition)
         <span class="nav-label">{{ item.label }}</span>
       </div>
     </nav>
+
+    <!-- 底部版本号 -->
+    <div class="sidebar-footer">
+      <div class="version-info">
+        <span class="version-badge">v0.1.0</span>
+        <span>DashBoard</span>
+        <span class="env-badge">Dev</span>
+      </div>
+      <div class="sidebar-status">
+        <span class="sidebar-status-dot"></span>
+        <span>系统运行中</span>
+      </div>
+    </div>
   </aside>
 </template>
 
