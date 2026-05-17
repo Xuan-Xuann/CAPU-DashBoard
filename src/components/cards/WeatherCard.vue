@@ -38,6 +38,17 @@ function getWeatherIcon(temp: string): string {
   if (t >= 0) return '🌥️'
   return '❄️'
 }
+
+function getFeelsLike(temp: string): string {
+  const t = parseFloat(temp)
+  if (t >= 35) return '酷热'
+  if (t >= 28) return '炎热'
+  if (t >= 22) return '温暖'
+  if (t >= 15) return '舒适'
+  if (t >= 8) return '凉爽'
+  if (t >= 0) return '寒冷'
+  return '严寒'
+}
 </script>
 
 <template>
@@ -45,7 +56,7 @@ function getWeatherIcon(temp: string): string {
     <div class="card-header">
       <span class="card-title">
         <span class="weather-icon">{{ tempData ? getWeatherIcon(tempData.temperature) : '🌡️' }}</span>
-        {{ tempData?.station_name || '天气' }}
+        {{ tempData?.station_name || '龙泉驿 · 天气' }}
       </span>
       <span class="card-badge">{{ lastUpdate }}</span>
     </div>
@@ -60,12 +71,23 @@ function getWeatherIcon(temp: string): string {
           <span class="temp-value">{{ tempData.temperature }}</span>
           <span class="temp-unit">°C</span>
         </div>
+        <div class="feels-like">
+          <span class="feels-icon">🌡️</span>
+          <span class="feels-text">{{ getFeelsLike(tempData.temperature) }}</span>
+        </div>
       </div>
-      
-      <div class="weather-time">
-        <span class="time-icon">🕐</span>
-        <span>数据时间: {{ tempData.update_time }}</span>
-        <span> 龙泉驿中学就在附近</span>
+
+      <div class="weather-details">
+        <div class="detail-item">
+          <span class="detail-icon">🕐</span>
+          <span class="detail-label">数据时间</span>
+          <span class="detail-value">{{ tempData.update_time }}</span>
+        </div>
+        <div class="detail-item">
+          <span class="detail-icon">📍</span>
+          <span class="detail-label">监测站</span>
+          <span class="detail-value">龙泉驿</span>
+        </div>
       </div>
     </div>
     
@@ -74,12 +96,8 @@ function getWeatherIcon(temp: string): string {
     </div>
 
     <div class="card-footer">
-      <span class="source-tag">数据源: 国家气象站(Fan API)</span>
-
+      <span class="source-tag">📡 国家气象站 · FanStudio API</span>
     </div>
-    
-    
-    
   </div>
 </template>
 
