@@ -1,14 +1,17 @@
 {
   "name": "capu-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite",
-    "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "sync-version": "node scripts/sync-version.cjs",
+    "prebuild": "npm run sync-version",
+    "build": "vite build",
+    "dev": "npm run sync-version && vite",
+    "predev": "npm run sync-version"
   },
   "dependencies": {
+    "@lucide/vue": "^1.16.0",
     "axios": "^1.15.0",
     "vue": "^3.5.30",
     "vue-router": "^4.6.4"
