@@ -1,0 +1,33 @@
+name: 检查推送目标分支
+
+on:
+  push:
+    branches:
+      - '**'  # 监听所有分支的推送事件
+
+jobs:
+  check_push_target:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 检查是否直接推送到 master 分支
+        if: github.ref == 'refs/heads/master'
+        run: |
+          echo "::error file=check-push-target.yml::[错误] 禁止直接推送到 master 分支。请推送到 dev 分支或创建新分支，然后通过 Pull Request 合并。"
+          exit 1
+
+      - name: 检查是否推送到 dev 分支
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          echo "[通过] 允许推送到 dev 分支。"
+
+      - name: 检查是否推送到新分支
+        if: github.ref != 'refs/heads/master' && github.ref != 'refs/heads/dev'
+        run: |
+          BRANCH_NAME="${{ github.ref }}"
+          echo "[通过] 允许推送到新分支: $BRANCH_NAME"
+
+      - name: 推送验证通过
+        if: github.ref != 'refs/heads/master'
+        run: |
+          echo "[完成] 推送目标分支验证通过。"

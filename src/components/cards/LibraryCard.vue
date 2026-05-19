@@ -39,7 +39,7 @@ const lastUpdate = inject<Ref<string>>('libraryLastUpdate')
     </div>
 
     <div class="card-footer">
-      <span class="source-tag">数据源: api.rinty.xyz</span>
+      <span class="source-tag">🏛️ 图书馆系统 · FanStudio API</span>
     </div>
   </div>
 </template>

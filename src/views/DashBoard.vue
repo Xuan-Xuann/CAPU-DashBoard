@@ -38,7 +38,13 @@ async function refreshLibrary() {
 // ===== 计算属性 =====
 const formattedUptime = computed(() => {
   if (!statusSummary.value) return '--'
-  return (statusSummary.value.uptime_seconds / 3600).toFixed(1)
+  const s = statusSummary.value.uptime_seconds
+  const d = Math.floor(s / 86400)
+  const h = Math.floor((s % 86400) / 3600)
+  const m = Math.floor((s % 3600) / 60)
+  if (d > 0) return `${d}天 ${h}小时`
+  if (h > 0) return `${h}小时 ${m}分钟`
+  return `${m}分钟`
 })
 
 const overallStatusText = computed(() => {
@@ -51,8 +57,8 @@ onMounted(() => {
   refreshStatus()
   refreshLibrary()
   
-  statusTimer = setInterval(refreshStatus, 30000)
-  libraryTimer = setInterval(refreshLibrary, 30000)
+  statusTimer = setInterval(refreshStatus, 300000)   // 5 分钟
+  libraryTimer = setInterval(refreshLibrary, 300000)  // 5 分钟
 })
 
 onUnmounted(() => {
@@ -74,7 +80,7 @@ onUnmounted(() => {
         </div>
         <div class="stats-summary">
           <span>数据源: {{ statusSummary?.operational_sources || 0 }}/{{ statusSummary?.total_sources || 0 }}</span>
-          <span>今日请求: {{ statusSummary?.total_requests_today || '--' }}</span>
+          <span>总请求: {{ statusSummary?.total_requests_today || '--' }}</span>
           <span>运行: {{ formattedUptime }}h</span>
         </div>
       </div>
@@ -88,14 +94,32 @@ onUnmounted(() => {
       <WeatherCard />
 
       
-      <!-- WebVPN 占位 -->
-      <PlaceholderCard 
-        emoji="🔧"
-        title="更多信息卡片敬请期待"
-        description="😉正在开发哦，敬请期待"
-        badge="规划中"
-      />
     </main>
+
+    <!-- 规划中的功能 - 折叠收起 -->
+    <div class="placeholder-section">
+      <div class="placeholder-section-title">📋 规划中的功能</div>
+      <div class="placeholder-grid">
+        <PlaceholderCard 
+          emoji="🔧"
+          title="WebVPN 状态"
+          description="实时监控学校 WebVPN 连接状态"
+          badge="规划中"
+        />
+        <PlaceholderCard 
+          emoji="🍽️"
+          title="食堂拥挤度"
+          description="各食堂实时人流量与拥挤程度"
+          badge="规划中"
+        />
+        <PlaceholderCard 
+          emoji="📅"
+          title="校历与活动"
+          description="查看学期安排与校园活动日历"
+          badge="规划中"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
