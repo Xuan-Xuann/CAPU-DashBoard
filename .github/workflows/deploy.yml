@@ -97,9 +97,9 @@ jobs:
       - name: 计算版本号
         id: version
         run: |
-          # 从 package.json 读取当前版本号（由 sync-version 脚本维护）
-          CURRENT_VERSION=$(node -p "require('./package.json').version")
-          echo "Current version from package.json: $CURRENT_VERSION"
+          # 从 .env.example 读取当前版本号（版本号的唯一真实来源）
+          CURRENT_VERSION=$(grep -oP 'VITE_APP_VERSION=\K.*' .env.example || echo "1.0.0")
+          echo "Current version from .env.example: $CURRENT_VERSION"
           
           # 解析版本号
           MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
@@ -109,56 +109,38 @@ jobs:
           # 校验版本号格式
           if ! [[ "$MAJOR" =~ ^[0-9]+$ ]] || ! [[ "$MINOR" =~ ^[0-9]+$ ]] || ! [[ "$PATCH" =~ ^[0-9]+$ ]]; then
             echo "⚠️ 版本号格式异常: $CURRENT_VERSION，使用默认版本 1.0.0"
-            MAJOR=1
-            MINOR=0
-            PATCH=0
+            MAJOR=1; MINOR=0; PATCH=0
           fi
           
           # 根据触发方式决定版本更新策略
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-            # 手动触发时使用指定策略
             VERSION_TYPE="${{ github.event.inputs.version_type }}"
             CUSTOM_VERSION="${{ github.event.inputs.custom_version }}"
-            
             if [ -n "$CUSTOM_VERSION" ]; then
               NEW_VERSION="$CUSTOM_VERSION"
             else
               case $VERSION_TYPE in
-                major)
-                  MAJOR=$((MAJOR + 1))
-                  MINOR=0
-                  PATCH=0
-                  ;;
-                minor)
-                  MINOR=$((MINOR + 1))
-                  PATCH=0
-                  ;;
-                patch)
-                  PATCH=$((PATCH + 1))
-                  ;;
+                major) MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0 ;;
+                minor) MINOR=$((MINOR + 1)); PATCH=0 ;;
+                patch) PATCH=$((PATCH + 1)) ;;
               esac
               NEW_VERSION="$MAJOR.$MINOR.$PATCH"
             fi
           else
-            # 自动触发时根据提交信息决定
             COMMIT_MSG=$(git log -1 --pretty=%B)
-            
             if echo "$COMMIT_MSG" | grep -qiE 'breaking change|major:'; then
-              MAJOR=$((MAJOR + 1))
-              MINOR=0
-              PATCH=0
+              MAJOR=$((MAJOR + 1)); MINOR=0; PATCH=0
             elif echo "$COMMIT_MSG" | grep -qiE 'feat|feature|minor:'; then
-              MINOR=$((MINOR + 1))
-              PATCH=0
+              MINOR=$((MINOR + 1)); PATCH=0
             else
               PATCH=$((PATCH + 1))
             fi
             NEW_VERSION="$MAJOR.$MINOR.$PATCH"
           fi
-          
           echo "new_version=$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "tag_name=v$NEW_VERSION" >> $GITHUB_OUTPUT
           echo "New version: $NEW_VERSION"
+
 
 
       - name: 更新 package.json 版本
@@ -173,6 +155,15 @@ jobs:
           git add package.json package-lock.json
           git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}"
           git push
+
+      - name: 更新版本文件
+        if: github.event_name == 'push'
+        run: |
+          # 同步 .env.example 版本号
+          sed -i "s/VITE_APP_VERSION=.*/VITE_APP_VERSION=${{ steps.version.outputs.new_version }}/" .env.example
+          git add .env.example
+          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }}" --allow-empty || true
+
 
       - name: 生成更新日志
         id: changelog
