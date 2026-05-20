@@ -11,7 +11,7 @@ jobs:
     
     steps:
       - name: 检查是否直接推送到 master 分支
-        if: github.ref == 'refs/heads/master'
+        if: github.ref == 'refs/heads/master' && github.actor != 'github-actions[bot]'
         run: |
           echo "::error file=check-push-target.yml::[错误] 禁止直接推送到 master 分支。请推送到 dev 分支或创建新分支，然后通过 Pull Request 合并。"
           exit 1
