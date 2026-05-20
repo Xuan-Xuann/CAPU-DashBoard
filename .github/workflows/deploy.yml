@@ -94,15 +94,22 @@ jobs:
       - name: 计算版本号
         id: version
         run: |
-          # 获取最新 tag
-          LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "v0.0.0")
-          echo "Latest tag: $LATEST_TAG"
+          # 从 package.json 读取当前版本号（由 sync-version 脚本维护）
+          CURRENT_VERSION=$(node -p "require('./package.json').version")
+          echo "Current version from package.json: $CURRENT_VERSION"
           
           # 解析版本号
-          VERSION=${LATEST_TAG#v}
-          MAJOR=$(echo $VERSION | cut -d. -f1)
-          MINOR=$(echo $VERSION | cut -d. -f2)
-          PATCH=$(echo $VERSION | cut -d. -f3)
+          MAJOR=$(echo $CURRENT_VERSION | cut -d. -f1)
+          MINOR=$(echo $CURRENT_VERSION | cut -d. -f2)
+          PATCH=$(echo $CURRENT_VERSION | cut -d. -f3)
+          
+          # 校验版本号格式
+          if ! [[ "$MAJOR" =~ ^[0-9]+$ ]] || ! [[ "$MINOR" =~ ^[0-9]+$ ]] || ! [[ "$PATCH" =~ ^[0-9]+$ ]]; then
+            echo "⚠️ 版本号格式异常: $CURRENT_VERSION，使用默认版本 1.0.0"
+            MAJOR=1
+            MINOR=0
+            PATCH=0
+          fi
           
           # 根据触发方式决定版本更新策略
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
